@@ -9,6 +9,7 @@ import Home from './vuex/home/index'
 import Sign from './vuex/home/signin'
 import Center from './vuex/home/center'
 import Search from './vuex/search/search'
+import Tea from './vuex/home/tea'
 
 export default new Vuex.Store({
   state,
@@ -21,5 +22,6 @@ export default new Vuex.Store({
     Sign,
     Center,
     Search,
+    Tea
   }
 })

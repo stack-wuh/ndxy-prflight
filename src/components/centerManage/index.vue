@@ -22,13 +22,13 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
-    let type = window.$store.state.Sign.type
     next(vm => {
-     if(type === 1){
-       vm.$router.push({path: '/center/baseInfo'})
-     }else {
-       vm.$router.push({path: '/center/pubtest/tea'})
-     }
+      let type = vm.$store.state.Sign.type
+      if(type === 1){
+        vm.$router.push({path: '/center/baseInfo'})
+      }else if(type === 2){
+        vm.$router.push({path: '/center/pubtest/tea'})
+      }
     })
   },
   methods: {
@@ -49,11 +49,12 @@ export default {
     @include flex-box(row, nowrap, space-between, flex-start);
     margin-top:20px;
     .left-wrapper{
+      position: fixed;
       width:220px;
     }
     .right-wrapper{
-      flex:1;
-      margin-left: 20px;
+      width:calc(100% - 220px);
+      margin-left: 240px;
     }
   }
 }

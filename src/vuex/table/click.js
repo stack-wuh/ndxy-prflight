@@ -1,4 +1,4 @@
-export const OpenDialogToggle = ({path, row} = {}) => {
+export const OpenDialogToggle = ({path, text, row, $index} = {}) => {
   window.$store.commit('openDialog',{path})
   switch(path){
     case '/center/exam' : return window.$store.dispatch('getExamOne', {exp:row.exp})

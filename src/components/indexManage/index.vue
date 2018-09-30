@@ -192,7 +192,7 @@ export default {
       }
       .list-item__img{
         width: 100%;
-        height: 120px;
+        height: 160px;
       }
       .list-item_detail{
         display: -webkit-box;

@@ -17,6 +17,11 @@ const Feedback = resolve => require(['@/components/centerManage/mid/feedback'], 
 const TeacherPubTest = resolve => require(['@/components/centerManage/teacher/pubtest'], resolve)
 const TeacherPubWare = resolve => require(['@/components/centerManage/teacher/pubware'], resolve)
 const TeacherPrevList = resolve => require(['@/components/centerManage/teacher/list'], resolve)
+const TeaDetail = resolve => require(['@/components/centerManage/teacher/details'], resolve)
+const StudentList = resolve => require(['@/components/centerManage/teacher/order'], resolve)
+const TeaConcat = resolve => require(['@/components/centerManage/teacher/concat'], resolve)
+const TeacherOneDetail = resolve => require(['@/components/details/teacher'], resolve)
+const TeaWareDetail = resolve => require(['@/components/centerManage/teacher/wareInfo'], resolve)
 
 
 const SignIn = resolve => require(['@/components/signManage/signin'], resolve)
@@ -154,6 +159,32 @@ export default new Router({
             {
               path:'/center/seatest/tea',
               component:TeacherPrevList
+            },
+            {
+              path:'/center/seatest/tea',
+              alias:'/center/seaware/tea',
+              component:TeacherPrevList
+            },
+            {
+              path:'/center/seatest/tea',
+              alias:'/center/seafixed/tea',
+              component:TeacherPrevList
+            },
+            {
+              path:'/list/details/tea',
+              component:TeaDetail
+            },
+            {
+              path:'/stu/order/tea',
+              component:StudentList
+            },
+            {
+              path:'/concat/tea',
+              component:TeaConcat
+            },
+            {
+              path:'/ware/pub/tea',
+              component:TeaWareDetail
             }
           ]
         },
@@ -176,6 +207,10 @@ export default new Router({
           path:'/notice/detail',
           name:'noticeDetail',
           component:NoticeDetail
+        },
+        {
+          path:'/teacherone/detail/tea',
+          component:TeacherOneDetail
         }
       ]
     },

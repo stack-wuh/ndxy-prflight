@@ -1,15 +1,16 @@
 <template>
   <section class="wrapper teacher-wrapper">
     <section class="teacher-list">
-      <section v-for="(item,index) in 40" :key="index" class="teacher-item">
-        <img :src="baseImg" alt="logo">
-        <span>陈劲松</span>
+      <section @click="jump2detail(item)" v-for="(item,index) in data" :key="index" class="teacher-item">
+        <img :src="item.img || baseImg" alt="logo">
+        <span>{{item.name}}</span>
       </section>
     </section>
   </section>
 </template>
 
 <script>
+import {mapActions, mapState} from 'vuex';
 export default {
   name: '',
 
@@ -18,8 +19,24 @@ export default {
       baseImg:require('../../assets/img/list-2.png')
     }
   },
-
-  methods: {}
+  computed:{
+    ...mapState({
+      data: state => state.Tea.data.map(item => {
+        return {...item, img: item.img ? $img + '/Img/' + item.img : ''}
+      })
+    })
+  },
+  methods: {
+    ...mapActions({
+      'getTeaConcats':'getTeaConcats'
+    }),
+    jump2detail(item){
+      this.$router.push({path:'/teacherone/detail/tea', query:{info: JSON.stringify(item)}})
+    }
+  },
+  created(){
+    this.getTeaConcats()
+  }
 }
 </script>
 

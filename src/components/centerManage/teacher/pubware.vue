@@ -5,8 +5,8 @@
         <el-date-picker  class="my-input-220" type="week" format="yyyy年 第 WW 周" v-model="form.week" ></el-date-picker>
       </el-form-item>
       <el-form-item label="选择设备">
-        <el-select  class="my-input-220" v-model="form.sys">
-          <el-option v-for="(item,index) in sys" :label="item.label" :value="item.value"></el-option>
+        <el-select  class="my-input-220" v-model="form.eq">
+          <el-option v-for="(item,index) in eq" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="选择位置">
@@ -39,10 +39,8 @@ export default {
     return {
       form:{
         week:'',
-        sys:'',
-        exp:'',
+        eq:'',
         location:'',
-        num:'',
         total:'',
         teacher:'',
         time:'',
@@ -51,19 +49,18 @@ export default {
   },
   computed:{
     ...mapState({
-      sys: state => state.sys__list,
       exp: state => state.exp__list,
       location: state => state.location__list,
-      major: state => state.major__list
+      eq: state => state.eq__list
     }),
   },
   methods: {
     ...mapActions({
-      'getPubTestTypeForTea':'getPubTestTypeForTea'
+      'getPubWareTypeForTea':'getPubWareTypeForTea'
     })
   },
   created(){
-    this.getPubTestTypeForTea()
+    this.getPubWareTypeForTea()
   }
 }
 </script>

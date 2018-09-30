@@ -73,9 +73,9 @@ export default {
       this.login({form: this.form}).then(res => {
         if(res.code === 1){
           if(res.data.type ===  1){
-            this.$router.push({path: '/center'})
-          }else{
-            this.$router.push({path: '/center/pubtest/tea'})
+            this.$router.replace('/center/baseInfo')
+          }else if(res.data.type === 2){
+            this.$router.replace('/center/pubtest/tea')
           }
         }
       })

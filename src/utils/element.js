@@ -30,7 +30,8 @@ import {
   Tabs,
   TabPane,
   Rate,
-  DatePicker
+  DatePicker,
+  Upload,
 } from 'element-ui'
 Vue.use(Button)
 Vue.use(Input)
@@ -57,6 +58,7 @@ Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Rate)
 Vue.use(DatePicker)
+Vue.use(Upload)
 Vue.prototype.$ELEMENT = {size:'small',zIndex:90000}
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

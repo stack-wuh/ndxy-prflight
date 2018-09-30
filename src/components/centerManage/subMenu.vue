@@ -73,7 +73,7 @@ export default {
         {
           label:'查看发布的设备',
           value:4,
-          url:'/center/seawarw/tea',
+          url:'/center/seaware/tea',
         },
         {
           label:'预约设备',
@@ -98,17 +98,17 @@ export default {
         {
           label:'教师通讯录',
           value:8,
-          url:'/center/feedback'
+          url:'/concat/tea'
         },
         {
           label:'设备维修上报',
           value:9,
-          url:'/center/feedback'
+          url:'/ware/pub/tea'
         },
         {
           label:'维修提交记录',
           value:10,
-          url:'/center/feedback'
+          url:'/center/seafixed/tea'
         },
       ]
     }

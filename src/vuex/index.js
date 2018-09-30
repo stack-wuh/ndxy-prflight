@@ -7,7 +7,8 @@ export const state = {
   orderWareList:[],
   sys__list:[],
   exp__list:[],
-  location__list:[]
+  location__list:[],
+  eq__list:[]
 }
 
 export const mutations = {
@@ -46,7 +47,18 @@ export const mutations = {
     }
   },
   setPutWareTypeForTea(state, {params} = {}){
-    
+    for(var k in params){
+      if(k === 'conf') continue
+      if(k === 'eq'){
+        state[k + '__list'] = params[k].map(item => {
+          return {label: item.title, value: item.id}
+        })
+      }else {
+        state[k + '__list'] = params[k].map(item => {
+          return {label: item.name, value: item.type ? item.type : item.sort}
+        })
+      }
+    }
   },
 }
 
