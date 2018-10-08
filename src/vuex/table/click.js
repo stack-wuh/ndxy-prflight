@@ -6,3 +6,9 @@ export const OpenDialogToggle = ({path, text, row, $index} = {}) => {
     case '/center/prevdev' : return window.$store.dispatch('getStudentJudge')
   }
 }
+
+export const jump2other = ({path, text, row, $index} = {}) => {
+  switch(path){
+    case '/center/test' : return window.$router.push({path: '/center/choose/test', query:{id: row.id}})
+  }
+}

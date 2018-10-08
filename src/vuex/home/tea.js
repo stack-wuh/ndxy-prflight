@@ -27,10 +27,8 @@ const actions = {
    * 发布实验提交
    */
   testPubForTea({commit}, {form} = {}){
-    let temp_form = JSON.parse(JSON.stringify(form))
-    temp_form.date = temp_form.date.slice(0, 10)
     return new Promise((resolve, reject) => {
-      $http.post('teacher/releaseexpsub', temp_form, res => {
+      $http.post('teacher/releaseexpsub', form, res => {
         return resolve(res)
       })
     })
@@ -48,10 +46,8 @@ const actions = {
     })
   },
   putWareForTea({commit}, {form} = {}){
-    let temp_form = JSON.parse(JSON.stringify(form))
-    temp_form.date = temp_form.date.slice(0, 10)
     return new Promise((resolve, reject) => {
-      $http.post('teacher/releaseeqsub', temp_form, res => {
+      $http.post('teacher/releaseeqsub', form, res => {
         return resolve(res)
       })
     })
@@ -121,6 +117,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       $http.post('teacher/menddetail', {id}, res => {
         commit('setWareFixedOne', {params: res.data})
+        return resolve(res)
+      })
+    })
+  },
+  /**
+   * 获取实验周数
+   */
+  getTestWeek({commit}, {date} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/expweek', {date}, res =>{
         return resolve(res)
       })
     })

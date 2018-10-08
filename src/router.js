@@ -13,6 +13,8 @@ const Notices = resolve => require(['@/components/indexManage/noticeList'],resol
 const BaseInfo = resolve => require(['@/components/centerManage/mid/baseInfo'], resolve)
 const Email = resolve => require(['@/components/centerManage/mid/email'], resolve)
 const Feedback = resolve => require(['@/components/centerManage/mid/feedback'], resolve)
+const ChooseDetail = resolve => require(['@/components/centerManage/mid/child/choose'], resolve)
+
 
 const TeacherPubTest = resolve => require(['@/components/centerManage/teacher/pubtest'], resolve)
 const TeacherPubWare = resolve => require(['@/components/centerManage/teacher/pubware'], resolve)
@@ -192,6 +194,10 @@ export default new Router({
             {
               path:'/ware/pub/tea',
               component:TeaWareDetail
+            },
+            {
+              path:'/center/choose/test',
+              component:ChooseDetail
             }
           ]
         },

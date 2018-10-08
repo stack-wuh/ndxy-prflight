@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper search-wrapper">
-    {{formatSearchSelect({path: changePath})}}
+    <!-- {{formatSearchSelect({path: changePath})}} -->
     <section v-if="formatSearchSelect({path: changePath})" class="search-list">
        <section class="search-item" v-for="(item,index) in formatSearchSelect({path: changePath})" :key="index">
          <el-select clearable @change="handleChange" v-model="searchList[item.prop]" v-if="item.type == 'select'" :placeholder="'请选择' + item.key">

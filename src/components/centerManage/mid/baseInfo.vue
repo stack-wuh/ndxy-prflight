@@ -1,9 +1,8 @@
 <template>
   <section class="baseinfo-wrapper wrapper">
       <section class=baseinfo-content>
-        {{list}}
         <my-search />
-        <MyTable v-if="isShow" :data="list"></MyTable>
+        <MyTable v-if="isShow" :data="list" class="my-table"></MyTable>
         <el-dialog title="测试" v-if="$route.path === '/center/exam'" :visible.sync="isShowDialog" :before-close="beforeClose">
             <section class="exam-list" v-for="(item,index) in tempList1" :key="index">
               <p class="exam-list__title">{{index+1}}.{{item.title}}{{item.type == 0 ? '【单选】' : '【多选】'}}</p>
@@ -163,6 +162,9 @@ export default {
     width: 100%;
     height: 30px;
     line-height: 30px;
+  }
+  .my-table{
+    margin-bottom: 20px;
   }
 }
 </style>

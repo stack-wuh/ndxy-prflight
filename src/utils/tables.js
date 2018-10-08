@@ -1,5 +1,6 @@
 import {
-  OpenDialogToggle
+  OpenDialogToggle,
+  jump2other
 } from '@/vuex/table/click'
 
 export const list = [{
@@ -36,33 +37,48 @@ export const list = [{
     list: [{
         label: '实验名称',
         type: 'default',
-        prop: '',
+        prop: 'title',
       },
       {
         label: '预约剩余时间',
         type: 'default',
-        prop: '',
+        prop: 'left',
       },
       {
         label: '教师',
         type: 'default',
-        prop: '',
+        prop: 'teacher',
       },
       {
         label: '人数',
         type: 'default',
-        prop: '',
+        prop: 'all',
       },
       {
-        label: '实验室',
-        type: 'default',
-        prop: '',
+        label:'实验室',
+        type:'default',
+        prop:'location_str'
+      },
+      {
+        label:'实验日期',
+        type:'default',
+        prop:'exp_date'
       },
       {
         label: '实验时间',
         type: 'default',
-        prop: '',
+        prop: 'exp_dotime',
       },
+      {
+        label:'操作',
+        type:'button',
+        list:[
+          {
+            text:'预约',
+            click:jump2other
+          }
+        ]
+      }
     ]
   },
   {
@@ -108,9 +124,14 @@ export const list = [{
         prop: 'teacher',
       },
       {
-        label: '实验时间',
+        label: '实验日期',
         type: 'default',
-        prop: 'time',
+        prop: 'exp_date',
+      },
+      {
+        label:'实验时间',
+        type:'default',
+        prop:'exp_dotime'
       },
       {
         label: '操作',
@@ -132,9 +153,14 @@ export const list = [{
         prop: 'title',
       },
       {
-        label: '试验时间',
+        label:'预约日期',
+        type:'default',
+        prop:'exp_date',
+      },
+      {
+        label: '预约时间',
         type: 'default',
-        prop: 'time',
+        prop: 'exp_dotime',
       },
       {
         label: '操作',
@@ -151,21 +177,32 @@ export const list = [{
     name: '预约设备',
     reg: ['预约设备', '/center/ware'],
     list: [{
-        label: '实验名称1',
+        label: '实验名称',
         type: 'default',
-        prop: '',
+        prop: 'title',
       },
       {
-        label: '试验时间',
+        label: '剩余预约时间',
         type: 'default',
-        prop: '',
+        prop: 'left',
+      },
+      {
+        label:'预约日期',
+        type:'default',
+        prop:'exp_date'
+      },
+      {
+        label:'预约时间',
+        type:'default',
+        prop:'exp_dotime',
       },
       {
         label: '操作',
         type: 'button',
         list: [{
-          text: '开始考试',
-          type: 'text'
+          text: '预约',
+          type: 'text',
+          click:jump2other
         }]
       }
     ]

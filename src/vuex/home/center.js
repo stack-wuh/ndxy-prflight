@@ -45,6 +45,9 @@ const mutations = {
     })
     state.temp_list1.content = ''
   },
+  setPrevOrder(state, {params} = {}){
+    state.data = params && params
+  }
 }
 
 const actions = {
@@ -60,13 +63,23 @@ const actions = {
     })
   },
   /**
-   * 获取预约试验
+   * 获取预约实验
    */
   getTestInfo({commit, dispatch, rootState}){
     return new Promise((resolve, reject) => {
       $http.post('student/orderexp', NotNull(rootState.search), res => {
         dispatch('getSysType')
         commit('setTestInfo', {params: res.data})
+        return resolve(res)
+      })
+    })
+  },
+  /**
+   * 获取预约实验详情
+   */
+  getTestInfoOne({commit}, {id} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('student/orderexpdetail', {id}, res => {
         return resolve(res)
       })
     })
@@ -134,6 +147,7 @@ const actions = {
       return new Promise((resolve, reject) => {
         $http.post('student/ordereq', NotNull(rootState.search), res => {
           dispatch('getPrevwareTypeList')
+          commit('setPrevOrder', {params: res.data})
           return resolve(res)
         })
       })

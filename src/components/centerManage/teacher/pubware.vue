@@ -1,8 +1,14 @@
 <template>
   <section class="wrapper">
     <el-form :model="form" ref="myForm" :rules="rules" label-width="120px">
-      <el-form-item label="实验周数" prop="date">
-        <el-date-picker  class="my-input-220" type="week" format="yyyy年 第 WW 周" v-model="form.date" ></el-date-picker>
+      <el-form-item label="开始日期" prop="start_time">
+        <el-date-picker @change="getTestWeek({date: form.start_time}).then(res => form.date = res.data)" value-format="yyyy-MM-dd" v-model="form.start_time" class="my-input-220" placeholder="请选择起止时间" ></el-date-picker>
+      </el-form-item>
+      <el-form-item v-if="form.date" label="实验周数" prop="date">
+        <span>第{{form.date}}周</span>
+      </el-form-item>
+      <el-form-item label="实验时间段" prop="range">
+        <el-time-picker class="my-input-220" arrow-control v-model="form.range" is-range value-format="hh:mm" range-placeholder="至" start-placeholder="开始时间" end-placeholder="结束时间"></el-time-picker>
       </el-form-item>
       <el-form-item label="选择设备" prop="eq_id">
         <el-select  class="my-input-220" v-model="form.eq_id">
@@ -20,12 +26,6 @@
       <el-form-item label="实验老师" prop="teacher">
         <el-input class="my-input-220" v-model="form.teacher" placeholder="请编辑实验老师"></el-input>
       </el-form-item>
-      <el-form-item label="开始时间" prop="start_time">
-        <el-date-picker value-format="yyyy-MM-dd" v-model="form.start_time" class="my-input-220" placeholder="请选择起止时间" ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="结束时间" prop="end_time">
-        <el-date-picker value-format="yyyy-MM-dd" v-model="form.end_time" class="my-input-220" placeholder="请选择起止时间" ></el-date-picker>
-      </el-form-item>
     </el-form>
     <section class="btn-area">
       <el-button @click="submit" class="btn__submit">提交</el-button>
@@ -41,7 +41,7 @@ const rules = {
   eq_count:[{required: true, message: '请编辑设备数量', trigger: 'blur'}],
   teacher:[{required: true, message: '请编辑设备数量', trigger: 'blur'}],
   start_time:[{required: true, message: '请选择开始时间', trigger: 'change'}],
-  end_time:[{required: true, message: '请选择结束时间', trigger: 'change'}],
+  range:[{required: true, message: '请选择实验时间段', trigger: 'change'}],
   date:[{required: true, message: '请选择实验周数', trigger: 'change'}],
 }
 export default {
@@ -56,7 +56,7 @@ export default {
         eq_count:'',
         teacher:'',
         start_time:'',
-        end_time:'',
+        range:'',
       },
       rules,
     }
@@ -71,13 +71,19 @@ export default {
   methods: {
     ...mapActions({
       'getPubWareTypeForTea':'getPubWareTypeForTea',
-      'putWareForTea':'putWareForTea'
+      'putWareForTea':'putWareForTea',
+      'getTestWeek':'getTestWeek'
     }),
     submit(){
       this.$refs.myForm.validate(valid => {
         if(valid){
           this.putWareForTea({form: this.form}).then(res => {
-            console.log(res)
+            res.code === 1 && (
+              setTimeout(()=>{
+                this.$refs.myForm.resetFields()
+                this.$router.push({path: '/center/seaware/tea'})
+              },1000)
+            )
           })
         }else{
           _g.toastMsg({
