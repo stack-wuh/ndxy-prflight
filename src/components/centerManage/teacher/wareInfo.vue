@@ -1,19 +1,19 @@
 <template>
   <section class="wrapper">
-      <el-form :model="form" label-width="120px">
+      <el-form :model="form" :rules="rules" ref="myForm" label-width="120px">
         <el-form-item label="设备编号" prop="bianhao">
-          <el-input v-model="form.bianhao" @change="getWareInfo({bianhao: form.bianhao})"></el-input>
+          <el-input v-model="form.bianhao" @change="inputChange"></el-input>
         </el-form-item>
         <el-form-item label="设备型号" prop="xinghao">
-          <el-input v-model="form.xinghao"></el-input>
+          <el-input :disabled="true" v-model="form.xinghao"></el-input>
         </el-form-item>
         <el-form-item label="设备名称" prop="name">
-          <el-input v-model="form.name"></el-input>
+          <el-input :disabled="true" v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="设备位置" prop="location">
-          <el-input v-model="form.location" ></el-input>
+          <el-input :disabled="true" v-model="form.location" ></el-input>
         </el-form-item>
-        <el-form-item label="保修原因" prop="reason">
+        <el-form-item label="报修原因" prop="reason">
           <el-input v-model="form.reason" type="textarea" :rows="4"></el-input>
         </el-form-item>
         <el-form-item label="上传图片" prop="photo">
@@ -35,6 +35,15 @@
 
 <script>
 import {mapActions} from 'vuex'
+const rules = {
+  bianhao:[{required: true, message: '请编辑设备编号', trigger: 'blur'}],
+  xinghao:[{required: false, message: '请编辑设备型号', trigger: 'blur'}],
+  name:[{required: false, message: '请编辑设备名称', trigger: 'blur'}],
+  location:[{required: false, message: '请编辑设备位置', trigger: 'blur'}],
+  reason:[{required: true, message: '请编辑报修原因', trigger: 'blur'}],
+  photo:[{required: true, message: '请上传图片', trigger: 'change'}],
+}
+
 export default {
   name: '',
 
@@ -46,21 +55,46 @@ export default {
         name:'',
         location:'',
         reason:'',
-        phone:'',
+        photo:'',
       },
-      uploadUrl: rootPath + 'upload/img'
+      uploadUrl: rootPath + '/index/upload',
+      rules,
     }
   },
 
   methods: {
     ...mapActions({
-      'getWareInfo':'getWareInfo'
+      'getWareInfo':'getWareInfo',
+      'putWareOne':'putWareOne'
     }),
     handleAvatarSuccess(file){
-      console.log(file)
+      this.form.photo = $img + '/' + file.data
+    },
+    inputChange(){
+      this.getWareInfo({bianhao: this.form.bianhao}).then(res => {
+        this.form.xinghao = res && res.data && res.data.xinghao
+        this.form.location = res && res.data && res.data.location_str
+        this.form.name = res && res.data && res.data.title
+      })
     },
     handleSubmit(){
-      console.log(this.form)
+      this.$refs.myForm.validate(valid => {
+        if(valid){
+          this.putWareOne({form: this.form}).then(res => {
+            if(res.code === 1){
+              setTimeout(()=>{
+                this.$refs.myForm.resetFields()
+                this.$router.push({path:'/center/seafixed/tea'})
+              },1000)
+            }
+          })
+        }else{
+          _g.toastMsg({
+            type: 'error',
+            msg: '请编辑必填项之后提交'
+          })
+        }
+      })
     }
   }
 }
@@ -77,12 +111,13 @@ export default {
     text-align: center;
   }
   .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
+    border: 1px dashed #eee;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
   }
+ 
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }

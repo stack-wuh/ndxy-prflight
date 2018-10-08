@@ -16,6 +16,9 @@ const mutations = {
   },
   seaWareFixedList(state, {params} = {}){
     state.data = params && params
+  },
+  setWareFixedOne(state, {params} = {}){
+    state.info = params && params
   }
 }
 
@@ -24,8 +27,10 @@ const actions = {
    * 发布实验提交
    */
   testPubForTea({commit}, {form} = {}){
+    let temp_form = JSON.parse(JSON.stringify(form))
+    temp_form.date = temp_form.date.slice(0, 10)
     return new Promise((resolve, reject) => {
-      $http.post('teacher/releaseexpsub', form, res => {
+      $http.post('teacher/releaseexpsub', temp_form, res => {
         return resolve(res)
       })
     })
@@ -38,6 +43,15 @@ const actions = {
     return new Promise((resolve, reject) => {
       $http.post(_url, {id}, res => {
         commit('setSeaTestForTea', {params: res.data})
+        return resolve(res)
+      })
+    })
+  },
+  putWareForTea({commit}, {form} = {}){
+    let temp_form = JSON.parse(JSON.stringify(form))
+    temp_form.date = temp_form.date.slice(0, 10)
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/releaseeqsub', temp_form, res => {
         return resolve(res)
       })
     })
@@ -75,6 +89,20 @@ const actions = {
       })
     })
   },
+
+  /**
+   * 提交设备维修记录
+   */
+  putWareOne({commit}, {form} = {}){
+    form.photo = form['photo'].replace($img, '')
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/mendsub', {form}, res => {
+        form.photo = $img + form.photo
+        return resolve(res)
+      })
+    })
+  },
+
   /**
    * 获取设备维修记录
    */
@@ -85,11 +113,26 @@ const actions = {
         return resolve(res)
       })
     })
+  },
+  /**
+   * 获取设备维修详情
+   */
+  getWareFixedDetailOne({commit}, {id} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/menddetail', {id}, res => {
+        commit('setWareFixedOne', {params: res.data})
+        return resolve(res)
+      })
+    })
   }
 }
 
 const getters = {
-
+  formatFixedList: state => {
+    return state.data.map(item => {
+      return {...item, avatar: $img + '/' + item.photo}
+    })
+  }
 }
 export default {
   state, mutations, actions, getters

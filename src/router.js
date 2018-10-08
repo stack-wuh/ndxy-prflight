@@ -22,6 +22,9 @@ const StudentList = resolve => require(['@/components/centerManage/teacher/order
 const TeaConcat = resolve => require(['@/components/centerManage/teacher/concat'], resolve)
 const TeacherOneDetail = resolve => require(['@/components/details/teacher'], resolve)
 const TeaWareDetail = resolve => require(['@/components/centerManage/teacher/wareInfo'], resolve)
+const TeaFixedList = resolve => require(['@/components/centerManage/teacher/fixedList'], resolve)
+const TeaWareDetailOne = resolve => require(['@/components/centerManage/teacher/fixedDetail'], resolve)
+
 
 
 const SignIn = resolve => require(['@/components/signManage/signin'], resolve)
@@ -166,9 +169,13 @@ export default new Router({
               component:TeacherPrevList
             },
             {
-              path:'/center/seatest/tea',
-              alias:'/center/seafixed/tea',
-              component:TeacherPrevList
+              path:'/center/seafixed/tea',
+              component:TeaFixedList
+            },
+            {
+              path:'/center/seafixedDetail/tea/:id',
+              name:'centerFixedDetailOne',
+              component:TeaWareDetailOne,
             },
             {
               path:'/list/details/tea',
