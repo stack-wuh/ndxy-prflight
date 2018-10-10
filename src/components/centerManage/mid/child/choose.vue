@@ -45,7 +45,7 @@
               <span class="item-box__col-item" v-for="(sub, sid) in item" :key="sid">
                 <div class="item-box_col-list">
                   <img src="../../../../assets/img/icon-user-active.png" alt="" class="item-box__img">
-                  <span>{{sub.name}}</span>
+                  <span>{{sub && sub.name}}</span>
                 </div>
               </span>
             </section>
@@ -89,7 +89,6 @@ export default {
                                                   .then(res => {
                                                     this.info = res.data
                                                     this.student = res.data.students
-                                                    console.log(res)
                                                   })
       }
     },

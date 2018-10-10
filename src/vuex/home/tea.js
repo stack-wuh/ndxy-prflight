@@ -55,10 +55,10 @@ const actions = {
   /**
    * 获取发布的设备
    */
-  seaWareForTea({commit}, {id} = {}){
+  seaWareForTea({commit}, {id, num = 24, page = 1} = {}){
     let _url = id ? 'teacher/releaseeqdetail' : 'teacher/releaseeqlist'
     return new Promise((resolve, reject) => {
-      $http.post(_url, {id}, res => {
+      $http.post(_url, {id, num, page}, res => {
         commit('setWareForTea', {params: res.data})
         return resolve(res)
       })
@@ -67,9 +67,9 @@ const actions = {
   /**
    * 获取教师通讯录
    */
-  getTeaConcats({commit}){
+  getTeaConcats({commit}, {num = 24, page = 1} = {}){
     return new Promise((resolve, reject) => {
-      $http.post('user/contactus', {}, res => {
+      $http.post('user/contactus', {num, page}, res => {
         commit('setTeaConcat', {params: res.data})
         return resolve(res)
       })
@@ -102,9 +102,9 @@ const actions = {
   /**
    * 获取设备维修记录
    */
-  getWareFixedList({commit}){
+  getWareFixedList({commit}, {num = 24, page = 1}){
     return new Promise((resolve, reject) => {
-      $http.post('teacher/mendlist', {}, res => {
+      $http.post('teacher/mendlist', {num, page}, res => {
         commit('seaWareFixedList', {params: res.data})
         return resolve(res)
       })
@@ -196,7 +196,7 @@ const actions = {
 
 const getters = {
   formatFixedList: state => {
-    return state.data && state.data.map(item => {
+    return state.data && state.data.list && state.data.list.map(item => {
       return {...item, avatar: $img + '/' + item.photo}
     })
   }

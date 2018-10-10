@@ -7,30 +7,38 @@
         <p class="tea-item__email">邮箱: {{item.email}}</p>
       </section>
     </section>
+    <my-bottom :pageSize="15" :total="total" @getCurrPage="getCurrPage" />
   </section>
 </template>
 
 <script>
 import {mapActions, mapState} from 'vuex'
+import MyBottom from '@/components/common/bottom'
 export default {
   name: '',
-
+  components:{
+    MyBottom,
+  },
   data () {
     return {
     }
   },
   computed:{
     ...mapState({
-      'data': state => state.Tea.data
+      'data': state => state.Tea.data.list,
+      total: state => Number(state.Tea.data.total)
     })
   },
   methods: {
     ...mapActions({
       'getTeaConcats':'getTeaConcats'
-    })
+    }),
+    getCurrPage(e){
+      this.getTeaConcats({num: 15, page: e})
+    }
   },
   created(){
-    this.getTeaConcats()
+    this.getTeaConcats({num: 15, page: 1})
   }
 }
 </script>

@@ -51,9 +51,9 @@ const actions = {
    /**
     * 获取设备环境
     */
-   getEqxList({commit}, {search} = {}){
+   getEqxList({commit}, {search, num = 20, page = 1} = {}){
      return new Promise((resolve, reject) => {
-       $http.post('eq/index', search, res => {
+       $http.post('eq/index', {...search, num, page}, res => {
          return resolve(res.data)
        })
      })
@@ -114,6 +114,26 @@ const actions = {
    getNoticeOne({commit}, {id} = {}){
      return new Promise((resolve, reject) => {
        $http.post('notice/detail', {id}, res => {
+         return resolve(res)
+       })
+     })
+   },
+   /**
+    * 获取教师风采详情
+    */
+   getTeacherDetailOne({commit}){
+     return new Promise((resolve, reject) => {
+       $http.post('index/sysinfo', {}, res => {
+         return resolve(res)
+       })
+     })
+   },
+   /**
+    * 获取通知公告列表
+    */
+   getNoticeList({commit}, {num = 24, page = 1}){
+     return new Promise((resolve, reject) => {
+       $http.post('notice/index', {num, page}, res => {
          return resolve(res)
        })
      })

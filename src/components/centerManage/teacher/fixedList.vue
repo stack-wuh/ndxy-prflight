@@ -34,21 +34,26 @@
         </section>
       </section>
     </section>
+    <my-bottom :pageSize="15" :total="total" />
   </section>
 </template>
 
 <script>
 import {mapActions, mapState, mapGetters} from 'vuex'
+import MyBottom from '@/components/common/bottom'
 export default {
   name: '',
-
+  components:{
+    MyBottom
+  },
   data () {
     return {
     }
   },
   computed:{
     ...mapState({
-      'data': state => state.Tea && state.Tea.data
+      'data': state => state.Tea && state.Tea.data,
+      total: state => state.Tea && Number(state.Tea.data.total)
     }),
     ...mapGetters({
       'formatFixedList':'formatFixedList'
@@ -63,7 +68,7 @@ export default {
     }
   },
   created(){
-    this.getWareFixedList()
+    this.getWareFixedList({num: 15, page: 1})
   }
 }
 </script>

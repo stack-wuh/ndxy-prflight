@@ -2,22 +2,50 @@
   <section class="notices notices-wrapper">
     <section class="notices-list">
       <ul class="list-ul">
-        <li class="list-li__item" v-for="(item,index) in 20" :key="index">aaaaaaaaaaaaaa</li>
+        <li @click="jump2other(item)" class="list-li__item" v-for="(item,index) in list" :key="index">
+          [{{item.pubtime}}] {{item.title}}
+        </li>
       </ul>
+      <my-bottom :total="total" @getCurrPage="getCurrPage" />
     </section>
   </section>
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+import MyBottom from '@/components/common/bottom'
 export default {
   name: '',
-
+  components:{
+    MyBottom
+  },
   data () {
     return {
+      list:[],
+      total:0
     }
   },
 
-  methods: {}
+  methods: {
+    ...mapActions({
+      'getNoticeList':'getNoticeList'
+    }),
+    fetchData({num = 24, page = 1}){
+      this.getNoticeList({num, page}).then(res => {
+        this.list = res.data.list
+        this.total = Number(res.data.total)
+      })
+    },
+    getCurrPage(e){
+      this.fetchData({num: 24, page: e})
+    },
+    jump2other(item){
+      this.$router.push({path: '/notice/detail', query: {id: item.id}})
+    }
+  },
+  created(){
+    this.fetchData({num: 24, page: 1})
+  }
 }
 </script>
 
@@ -35,6 +63,13 @@ export default {
         border-radius: 4px;
         box-shadow: 0 2px 2px #ccc;
         background-color: #fff;
+
+        &:hover{
+          margin-left: 10px;
+          margin-top:5px;
+          cursor: pointer;
+          transition: all .5s linear;
+        }
       }
     }
   }

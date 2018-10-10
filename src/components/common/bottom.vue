@@ -1,7 +1,7 @@
 <template>
   <section class="bottom-wrapper">
     <section class="my-bottom__container">
-      <el-pagination :total="total" layout="total, prev, pager, next, jumper" @current-change="handleCurrChange" ></el-pagination>
+      <el-pagination :page-size="pageSize" :total="total" layout="total, prev, pager, next, jumper" @current-change="handleCurrChange" ></el-pagination>
     </section>
   </section>
 </template>
@@ -13,6 +13,10 @@ export default {
     total:{
       type:Number,
       default:0
+    },
+    pageSize:{
+      type: Number,
+      default: 24
     }
   },
   data () {

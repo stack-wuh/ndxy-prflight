@@ -6,14 +6,18 @@
         <span>{{item.name}}</span>
       </section>
     </section>
+    <my-bottom :total="total" @getCurrPage="getCurrPage" />
   </section>
 </template>
 
 <script>
 import {mapActions, mapState} from 'vuex';
+import MyBottom from '@/components/common/bottom'
 export default {
   name: '',
-
+  components:{
+    MyBottom
+  },
   data () {
     return {
       baseImg:require('../../assets/img/list-2.png')
@@ -21,9 +25,10 @@ export default {
   },
   computed:{
     ...mapState({
-      data: state => state.Tea.data.map(item => {
+      data: state => state.Tea && state.Tea.data && state.Tea.data.list && state.Tea.data.list.map(item => {
         return {...item, img: item.img ? $img + '/Img/' + item.img : ''}
-      })
+      }),
+      total: state => Number(state.Tea.data.total)
     })
   },
   methods: {
@@ -32,10 +37,13 @@ export default {
     }),
     jump2detail(item){
       this.$router.push({path:'/teacherone/detail/tea', query:{info: JSON.stringify(item)}})
+    },
+    getCurrPage(e){
+      this.getTeaConcats({num: 24, page: e})
     }
   },
   created(){
-    this.getTeaConcats()
+    this.getTeaConcats({num:24, page: 1})
   }
 }
 </script>

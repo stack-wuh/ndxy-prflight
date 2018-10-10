@@ -1,9 +1,9 @@
 <template>
   <section class="wrapper notice-wrapper">
       <section class="notice-detail">
-        <h3 class="notice__title">{{info && info.title}}</h3>
-        <time class="notice__time">发布时间: {{info && info.pubtime}}</time>
-        <article class="notice__article" v-html="info && info.content" ></article>
+        <h3 class="notice__title">{{info && info.title || '暂无标题'}}</h3>
+        <time class="notice__time">发布时间: {{info && info.pubtime || '暂无'}}</time>
+        <article class="notice__article" v-html="info && info.content || '暂无' "></article>
       </section>
   </section>
 </template>
@@ -24,14 +24,17 @@ export default {
   },
   methods: {
     ...mapActions({
-      'getTeacherOne':'getTeacherOne',
+      'getTeacherDetailOne':'getTeacherDetailOne',
       'getNoticeOne':'getNoticeOne'
     }),
     fetchData(){
       switch(this.path){
-        case '/notice/teacher/detail' : return this.getTeacherOne({id: this.$route.query.id})
+        case '/notice/teacher/detail' : return this.getTeacherDetailOne()
                                                     .then(res => {
-                                                      this.info = res.data
+                                                      this.info = {
+                                                        title: '教师风采',
+                                                        content: res.data.info
+                                                      }
                                                     }) 
         case '/notice/detail' : return this.getNoticeOne({id: this.$route.query.id})
                                             .then(res => {

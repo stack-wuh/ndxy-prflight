@@ -69,7 +69,6 @@ export default {
         eq_count:'',
         teacher:'',
         start_time:'',
-        end_time:'',
         range:'',
       },
       rules,

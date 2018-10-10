@@ -3,6 +3,8 @@
       <section class=baseinfo-content>
         <my-search />
         <MyTable v-if="isShow" :data="list" class="my-table"></MyTable>
+        <my-bottom v-show="!['/center/exam','/center/prevtest','/center/prevdev'].includes(path)" :total="totals" :pageSize="10" @getCurrPage="getCurrPage" />
+
         <el-dialog title="测试" v-if="$route.path === '/center/exam'" :visible.sync="isShowDialog" :before-close="beforeClose">
             <section class="exam-list" v-for="(item,index) in tempList1" :key="index">
               <p class="exam-list__title">{{index+1}}.{{item.title}}{{item.type == 0 ? '【单选】' : '【多选】'}}</p>
@@ -44,12 +46,14 @@
 <script>
 import MyTable from '@/components/common/table'
 import MySearch from '@/components/common/search'
+import MyBottom from '@/components/common/bottom'
 import {mapActions, mapState, mapMutations} from 'vuex'
 export default {
   name: 'baseinfo',
   components:{
     MyTable,
     MySearch,
+    MyBottom,
   },
   data () {
     return {
@@ -65,6 +69,7 @@ export default {
     },
     ...mapState({
       'list':state => state.Center.data,
+      'totals': state => state.Center.total,
       'isShowDialog': state => state.Table.isShowDialog,
       'tempList1': state => state.Center.temp_list1,
       'isShowDialogPrevTest': state => state.Table.isShowDialogPrevTest,
@@ -74,7 +79,7 @@ export default {
   watch:{
     path(){
       this.isShow = false
-      this.fetchData()
+      this.fetchData({num: 10, page:1})
       this.clearData()
       this.isShow = true
     }
@@ -100,14 +105,14 @@ export default {
     beforeClose(){
       this.openDialog({path: this.path})
     },
-    fetchData(){
+    fetchData({num = 10, page = 1}){
       switch(this.path){
-        case '/center/baseInfo' : return this.getBaseInfo()
+        case '/center/baseInfo' : return this.getBaseInfo({num, page})
         case '/center/test' : return this.getTestInfo()
         case '/center/exam' : return this.getExamInfo()
         case '/center/prevdev' : return this.getPrevDevList() 
         case '/center/prevtest' :return this.getPrevTestList()
-        case '/center/ware' : return this.getPrevOrder() 
+        case '/center/ware' : return this.getPrevOrder({num, page}) 
       }
     },
     submitExam(){
@@ -139,10 +144,13 @@ export default {
           },1000)
         )
       })
+    },
+    getCurrPage(e){
+      this.fetchData({num: 10, page: e})
     }
   },
   created(){
-    this.fetchData()
+    this.fetchData({num: 10, page: 1})
   }
 }
 </script>

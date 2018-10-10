@@ -10,10 +10,12 @@ const state = {
 
 const mutations = {
   setStoreInfo(state, {params} = {}){
-    state.data = params && params
+    state.data = params && params.list
+    state.total = params && Number(params.total)
   },
   setTestInfo(state, {params} = {}){
-    state.data = params && params
+    state.data = params && params.list
+    state.total = params && Number(params.total)
   },
   setExamInfo(state, {params} = {}){
     state.data = params && params
@@ -46,7 +48,8 @@ const mutations = {
     state.temp_list1.content = ''
   },
   setPrevOrder(state, {params} = {}){
-    state.data = params && params
+    state.data = params && params.list
+    state.total = params && Number(params.total)
   }
 }
 
@@ -54,9 +57,9 @@ const actions = {
   /**
    * 获取基本信息
    */
-  getBaseInfo({commit}){
+  getBaseInfo({commit}, {num = 24, page = 1} = {}){
     return new Promise((resolve, reject) => {
-      $http.post('student/myinfo', {}, res => {
+      $http.post('student/myinfo', {num, page}, res => {
         commit('setStoreInfo', {params: res.data})
         return resolve(res)
       })
@@ -65,9 +68,9 @@ const actions = {
   /**
    * 获取预约实验
    */
-  getTestInfo({commit, dispatch, rootState}){
+  getTestInfo({commit, dispatch, rootState}, {num = 10, page = 1} = {}){
     return new Promise((resolve, reject) => {
-      $http.post('student/orderexp', NotNull(rootState.search), res => {
+      $http.post('student/orderexp', {...NotNull(rootState.search), num, page}, res => {
         dispatch('getSysType')
         commit('setTestInfo', {params: res.data})
         return resolve(res)
@@ -143,7 +146,7 @@ const actions = {
    * 获取实验预约
    */
   getPrevTestList({commit, rootState}, {form} = {}){
-    let _url = rootState.Sign.type === 1 ? 'student/myorderexp' : 'teacher/myorderexp'
+    let _url = rootState.Sign.type === 1 ? 'student/myorderexp' : 'teacher/myordereq'
     return new Promise((resolve, reject) => {
       $http.post(_url, {}, res => {
         commit('setPrevTestList', {params: res.data})
@@ -154,9 +157,9 @@ const actions = {
   /**
    * 获取预约设备
    */
-    getPrevOrder({commit, dispatch, rootState}){
+    getPrevOrder({commit, dispatch, rootState}, {num = 10, page = 1} = {}){
       return new Promise((resolve, reject) => {
-        $http.post('student/ordereq', NotNull(rootState.search), res => {
+        $http.post('student/ordereq', {...NotNull(rootState.search), num, page}, res => {
           dispatch('getPrevwareTypeList')
           commit('setPrevOrder', {params: res.data})
           return resolve(res)

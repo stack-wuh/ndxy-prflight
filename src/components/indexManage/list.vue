@@ -2,29 +2,28 @@
   <section class="wrapper list-wrapper">
     <my-navs @getTypeChange="getTypeChange" class="my-navs" :list="list"></my-navs>
     <my-items v-if="isShow" class="item-list" :data="data"></my-items>
+    <my-bottom :total="total" @getCurrPage="getCurrPage" />
   </section>
 </template>
 
 <script>
 import MyNavs from '@/components/common/navs'
 import MyItems from '@/components/common/items'
+import MyBottom from '@/components/common/bottom'
 import {mapActions} from 'vuex'
 export default {
   name: 'list',
   components:{
     MyNavs,
-    MyItems
+    MyItems,
+    MyBottom,
   },
   data () {
     return {
-      list:[
-        // {
-        //   label:'专业',
-        //   list:[]
-        // },
-      ],
+      list:[],
       data:[],
-      isShow: true
+      isShow: true,
+      total:0,
     }
   },
   computed:{
@@ -52,25 +51,28 @@ export default {
     getTypeChange(e){
       this.fetchData({search: e})
     },
-    fetchData({search} = {}){
+    fetchData({search, num = 24, page = 1} = {}){
       let _path = this.$route.path
       if(_path === '/list'){
-        this.getEqxList({search}).then(res => {
-          this.data = res.map(item => {
+        this.getEqxList({search, num, page}).then(res => {
+          this.data = res.list.map(item => {
             return {...item, url: $img + '/Img/' + item.img, detail: item.title}
           })
+          this.total = Number(res.total)
         })
       }else if(_path === '/list/stream'){
         this.getSysList({search}).then(res => {
-          this.data = res.map(item => {
+          this.data = res.list.map(item => {
             return {...item, url: $img + '/Img/' + item.img, detail: item.title}
           })
+          this.total = Number(res.total)
         })
       }else if(_path === '/list/source'){
         this.getSourceList({search}).then(res=>{
-          this.data = res.map(item => {
+          this.data = res.list.map(item => {
             return {...item, url: $img + item.pic, detail: item.title}
           })
+          this.total = Number(res.total)
         })
       }
     },
@@ -98,6 +100,9 @@ export default {
                                         this.list.push({label: '专业', list: data})
                                       })
       }
+    },
+    getCurrPage(e){
+      this.fetchData({page: e})
     }
   },
   created(){
