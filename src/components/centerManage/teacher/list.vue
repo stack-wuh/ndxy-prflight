@@ -17,7 +17,7 @@
           </section>
         </section>
       </section>
-      <my-bottom :total="total" @getCurrPage="getCurrPage" />
+      <my-bottom :pageSize="10" :total="total" @getCurrPage="getCurrPage" />
   </section>
 </template>
 
