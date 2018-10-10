@@ -103,7 +103,19 @@ const actions = {
     */
    getTeacherOne({commit}, {id} = {}){
      return new Promise((resolve,reject) => {
-       $http.post('NoticeDetail')
+       $http.post('index/teacherdetail', {id}, res => {
+         return resolve(res)
+       })
+     })
+   },
+   /**
+    * 获取通知公告详情
+    */
+   getNoticeOne({commit}, {id} = {}){
+     return new Promise((resolve, reject) => {
+       $http.post('notice/detail', {id}, res => {
+         return resolve(res)
+       })
      })
    }
 }

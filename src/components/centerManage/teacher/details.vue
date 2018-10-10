@@ -31,20 +31,21 @@
       </section>
       <section class="details-item">
         <span class="item__title"></span>
-        <span class="item__desc">{{info.left}}</span>
+        <span class="item__desc" :class="[info.cancle == 1 ? 'item__desc-error' : '']">{{info.cancle == 0 ? info.left : '已取消'}}</span>
       </section>
     </section>
     <section @click="jump2other" class="type-area">
       <span>查看预约名单</span>
       <span class="my-icon-more"></span>
     </section>
-    <section class="btn-area">
-      <el-button>取消实验</el-button>
+    <section v-if="path === '/list/details/tea'" class="btn-area">
+      <el-button v-show="info.cancle == 0" @click="handleClickSubmit" >取消实验</el-button>
     </section>
   </section>
 </template>
 
 <script>
+import { mapActions} from 'vuex'
 export default {
   name: '',
 
@@ -53,14 +54,54 @@ export default {
       info:{}
     }
   },
-
+  computed:{
+    path(){
+      return this.$route.path
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    if(from.path === '/center/seatest/tea' || from.path === '/'){
+      next(vm => {
+        let _id = JSON.parse(vm.$route.query.info).id
+        vm.seaTestForTea({id: _id}).then(res => { vm.info = res.data})
+      })
+    }else if(from.path === '/center/seaware/tea' || from.path === '/'){
+      next(vm => {
+        let _id = JSON.parse(vm.$route.query.info).id
+        vm.seaWareForTea({id: _id}).then(res => { vm.info = res.data})
+      })
+    }
+  },
   methods: {
+    ...mapActions({
+      'seaTestForTea':'seaTestForTea',
+      'seaWareForTea':'seaWareForTea',
+      'putTestState':'putTestState'
+    }),
     jump2other(){
-      this.$router.push({path: '/stu/order/tea'})
+      // this.$router.push({path: '/stu/order/tea', query:{id: this.info.id}})
+      switch(this.path){
+        case '/list/details/tea' : return this.$router.push({path: '/stu/order/tea', query: {id: this.info.id}})
+        case '/list/details/ware/tea' : return this.$router.push({path: '/stu/order/ware/tea', query:{id: this.info.id}})
+      }
+    },
+    fetchData(){
+      switch(this.path){
+        case '/list/details/tea' : return this.seaTestForTea({id: this.info.id}).then(res => this.info = res.data)
+        case '/list/details/ware/tea' : return this.seaWareForTea({id: this.info.id}).then(res => this.info = res.data) 
+      }
+    },
+    handleClickSubmit(){
+      this.putTestState({id: this.info.id}).then(res => {
+        res.code === 1 &&
+        setTimeout(()=>{
+          this.fetchData()
+        }, 1000)
+      })
     }
   },
   created(){
-    this.info = this.$route.query.info ? JSON.parse(this.$route.query.info) : {}
+
   }
 }
 </script>
@@ -103,6 +144,9 @@ export default {
   .btn-area{
     margin-top:15px;
     text-align: center;
+  }
+  .item__desc-error{
+    color: $danger;
   }
 }
 </style>

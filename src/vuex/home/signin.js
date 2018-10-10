@@ -71,6 +71,16 @@ const actions = {
         return resolve(res)
       })
     })
+  },
+  /**
+   * 更改密码
+   */
+  changePwd({commit}, {form:{number, pwd, pwdre}} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('user/pwdchange', {number, pwd, pwdre}, res => {
+        return resolve(res)
+      })
+    })
   }
 }
 

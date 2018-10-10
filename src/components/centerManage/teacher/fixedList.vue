@@ -48,7 +48,7 @@ export default {
   },
   computed:{
     ...mapState({
-      'data': state => state.Tea.data
+      'data': state => state.Tea && state.Tea.data
     }),
     ...mapGetters({
       'formatFixedList':'formatFixedList'

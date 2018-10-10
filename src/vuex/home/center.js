@@ -85,6 +85,16 @@ const actions = {
     })
   },
   /**
+   * 实验预约选座
+   */
+  putTestChoose({commit}, {id, index} = {}){
+    return new Promise((resolve, reject) =>{
+      $http.post('student/choseseat', {id, index}, res => {
+        return resolve(res)
+      })
+    })
+  },
+  /**
    * 获取考试信息
    */
   getExamInfo({commit}){
@@ -132,9 +142,10 @@ const actions = {
   /**
    * 获取实验预约
    */
-  getPrevTestList({commit}, {form} = {}){
+  getPrevTestList({commit, rootState}, {form} = {}){
+    let _url = rootState.Sign.type === 1 ? 'student/myorderexp' : 'teacher/myorderexp'
     return new Promise((resolve, reject) => {
-      $http.post('student/myorderexp', {}, res => {
+      $http.post(_url, {}, res => {
         commit('setPrevTestList', {params: res.data})
         return resolve(res)
       })
@@ -148,6 +159,26 @@ const actions = {
         $http.post('student/ordereq', NotNull(rootState.search), res => {
           dispatch('getPrevwareTypeList')
           commit('setPrevOrder', {params: res.data})
+          return resolve(res)
+        })
+      })
+    },
+    /**
+     * 预约设备详情
+     */
+    getWareInfoOne({commit}, {id} = {}){
+      return new Promise((resolve, reject) => {
+        $http.post('student/ordereqdetail', {id}, res => {
+          return resolve(res)
+        })
+      })
+    },
+    /**
+     * 预约设备选座
+     */
+    putWareChoose({commit}, {id, index} = {}){
+      return new Promise((resolve, reject) => {
+        $http.post('student/choseseateq', {id, index}, res => {
           return resolve(res)
         })
       })

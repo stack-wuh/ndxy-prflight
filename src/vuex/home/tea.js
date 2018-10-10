@@ -36,10 +36,10 @@ const actions = {
   /**
    * 查看发布的实验
    */
-  seaTestForTea({commit}, {id} = {}){
+  seaTestForTea({commit}, {id, num = 10, page = 1} = {}){
     let _url = id ? 'teacher/releaseexpdetail' : 'teacher/releaseexplist'
     return new Promise((resolve, reject) => {
-      $http.post(_url, {id}, res => {
+      $http.post(_url, {id, num, page}, res => {
         commit('setSeaTestForTea', {params: res.data})
         return resolve(res)
       })
@@ -130,12 +130,73 @@ const actions = {
         return resolve(res)
       })
     })
-  }
+  },
+  /**
+   * 获取预约实验的名单
+   */
+  getPrevTestOrder({commit}, {id} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/releaseexpdetailuser', {id}, res => {
+        return resolve(res)
+      })
+    })
+  },
+  /**
+   * 查看发布的实验 -- 下载名单
+   */
+  handleDownLoadTestOrder({commit}, {id, path} = {}){
+    let _url = path === '/stu/order/tea' ? 'teacher/expexcel' : 'teacher/eqexcel'
+    return new Promise((resolve, reject) => {
+      $http.post(_url, {id}, res => {
+        window.location.href =  $img + '/' + res.data
+      })
+    })
+  },
+  /**
+   * 查看发布的实验 -- 评分
+   */
+  pubTestGrade({commit}, {id, stu_id, score, type} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/scoresub', {id, stu_id, score, type}, res => {
+        return resolve(res)
+      })
+    })
+  },  
+  /**
+   * 查看发布的实验 -- 取消实验
+   */
+  putTestState({commit}, {id} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/expcancle', {id}, res => {
+        return resolve(res)
+      })
+    })
+  },
+  /**
+   * 查看发布实验 -- 确认
+   */
+  putTestCheck({commit}, {id, stu_id_arr, type} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/finishall', {id, stu_id_arr, type}, res => {
+        return resolve(res)
+      })
+    })
+  },
+  /**
+   * 查看发布的设备 -- 预约名单
+   */
+  getPrevWareList({commit}, {id} = {}){
+    return new Promise((resolve, reject) => {
+      $http.post('teacher/releaseeqdetailuser', {id}, res => {
+        return resolve(res)
+      })
+    })
+  },
 }
 
 const getters = {
   formatFixedList: state => {
-    return state.data.map(item => {
+    return state.data && state.data.map(item => {
       return {...item, avatar: $img + '/' + item.photo}
     })
   }

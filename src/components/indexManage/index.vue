@@ -1,20 +1,19 @@
 <template>
   <section class="index-wrapper wrapper">
-    <swiper :options='options'>
-      <swiper-slide v-for="(item,index) in imgs" :key="index">
-        <img style="width:100%;" :src="'http://192.168.10.119/ndxy/public/' + item.pic" :alt="item.label">
-      </swiper-slide>
-      <div class="swiper-pagination" slot="pagination"></div>
-      <div class="swiper-button-prev" slot="button-prev"></div>
-      <div class="swiper-button-next" slot="button-next"></div>
-    </swiper>
+    <el-carousel class="my-carousel" :interval="3000" arrow="always">
+      <el-carousel-item class="my-carousle-item" v-for="(item,index) in imgs" :key="index">
+        <img class="my-carousel-item__img" :src="item.src" alt="">
+      </el-carousel-item>
+    </el-carousel>
     <section class="card-list">
       <section v-for="(item,index) in list" :key="index" class="card-list-item">
         <p class="list-item__title">
           <span class="list-item__tips">{{item.title}}</span>
           <span class="list-item__links" @click="jump2List(item)" >更多>></span>
         </p>
-        <img class="list-item__img" :src="item.img" alt="">
+        <section class="list-item__img_box">
+          <img class="list-item__img" :src="item.img" alt="">
+        </section>
         <section @click="jump2other(item)" v-if="item.detail" class="list-item_detail">
           <p class="list-item__detail__title">{{item.subTitle}}</p>
           {{item.detail}}
@@ -35,12 +34,6 @@ export default {
 
   data () {
     return {
-      options:{
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-          }
-      },
       imgs:[
         {
           label:'logo1',
@@ -97,14 +90,14 @@ export default {
         _url = '/eq/detail'
         search = {id: item.id}
       }else if(item.title === '教师风采'){
-        _url = '/notice/detail'
+        _url = '/notice/teacher/detail'
         search = {id: item.id}
       }else if(item.title === '实验体系'){
         _url = '/stream/detail'
         search = {id: item.id}
       }else if(item.title === '通知公告'){
         _url = '/notice/detail'
-        search = {id: item.id}
+        search = {id: list.id}
       }else if(item.title === '教学资源'){
         _url = '/source/detail'
         search = {id: item.id}
@@ -124,7 +117,9 @@ export default {
   },
   created(){
     this.getHomeInfo().then(res => {
-      (res.banner) && (this.imgs = res.banner)
+      (res.banner) && (this.imgs = res.banner.map(item => {
+        return {...item, src: $img + '/' + item.pic}
+      }))
       this.list[0] = {
         title:'实验设备',
         img: $img + '/Img/' + res.eq.img,
@@ -166,8 +161,15 @@ export default {
 @import '../../assets/style/base-cl.scss';
 @import '../../assets/style/mixin.scss';
 .index-wrapper{
-  .swiper-pagination{
-    bottom:20px;
+  .my-carousel{
+    width: 100%;
+    height: 400px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    .my-carousel-item__img{
+      width: 100%;
+      height: 100%;
+    }
   }
   .card-list{
     @include flex-box(row, wrap, space-between, flex-start);
@@ -190,10 +192,16 @@ export default {
           }
         }
       }
-      .list-item__img{
+      .list-item__img_box{
         width: 100%;
         height: 160px;
+        overflow: hidden;
+        .list-item__img{
+          width: 100%;
+          height: 160px;
+        }
       }
+
       .list-item_detail{
         display: -webkit-box;
         -webkit-box-orient: vertical;

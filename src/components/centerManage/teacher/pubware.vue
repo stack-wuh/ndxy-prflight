@@ -23,6 +23,9 @@
       <el-form-item label="设备数量" prop="eq_count">
         <el-input class="my-input-220" v-model="form.eq_count" placeholder="请编辑设备数量"></el-input>
       </el-form-item>
+      <el-form-item label="最低分使用" prop="min">
+        <el-input class="my-input-220" v-model="form.min" placeholder="请编辑设备数量"></el-input>
+      </el-form-item>
       <el-form-item label="实验老师" prop="teacher">
         <el-input class="my-input-220" v-model="form.teacher" placeholder="请编辑实验老师"></el-input>
       </el-form-item>
@@ -43,6 +46,7 @@ const rules = {
   start_time:[{required: true, message: '请选择开始时间', trigger: 'change'}],
   range:[{required: true, message: '请选择实验时间段', trigger: 'change'}],
   date:[{required: true, message: '请选择实验周数', trigger: 'change'}],
+  min:[{required: true, message: '请编辑最低分', trigger: 'blur'}]
 }
 export default {
   name: '',
@@ -57,6 +61,7 @@ export default {
         teacher:'',
         start_time:'',
         range:'',
+        min:'',
       },
       rules,
     }

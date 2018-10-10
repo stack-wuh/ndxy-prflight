@@ -43,3 +43,11 @@ html, body, #app {
 .el-upload{
   border:1px dashed #eee;
 }
+
+.index-wrapper{
+  .my-carousel{
+    .el-carousel__container{
+      height: 400px;
+    }
+  }
+}

@@ -33,6 +33,8 @@ import {
   DatePicker,
   TimePicker,
   Upload,
+  Carousel,
+  CarouselItem,
 } from 'element-ui'
 Vue.use(Button)
 Vue.use(Input)
@@ -61,6 +63,8 @@ Vue.use(Rate)
 Vue.use(DatePicker)
 Vue.use(Upload)
 Vue.use(TimePicker)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 Vue.prototype.$ELEMENT = {size:'small',zIndex:90000}
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

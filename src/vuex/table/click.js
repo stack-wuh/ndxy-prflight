@@ -10,5 +10,6 @@ export const OpenDialogToggle = ({path, text, row, $index} = {}) => {
 export const jump2other = ({path, text, row, $index} = {}) => {
   switch(path){
     case '/center/test' : return window.$router.push({path: '/center/choose/test', query:{id: row.id}})
+    case '/center/ware' : return window.$router.push({path: '/center/choose/ware', query:{id: row.id}})
   }
 }

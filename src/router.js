@@ -184,7 +184,17 @@ export default new Router({
               component:TeaDetail
             },
             {
+              path:'/list/details/tea',
+              alias:'/list/details/ware/tea',
+              component:TeaDetail
+            },
+            {
               path:'/stu/order/tea',
+              component:StudentList
+            },
+            {
+              path:'/stu/order/tea',
+              alias:'/stu/order/ware/tea',
               component:StudentList
             },
             {
@@ -197,6 +207,11 @@ export default new Router({
             },
             {
               path:'/center/choose/test',
+              component:ChooseDetail
+            },
+            {
+              path:'/center/choose/test',
+              alias:'/center/choose/ware',
               component:ChooseDetail
             }
           ]
@@ -218,7 +233,11 @@ export default new Router({
         },
         {
           path:'/notice/detail',
-          name:'noticeDetail',
+          component:NoticeDetail
+        },
+        {
+          path: '/notice/detail',
+          alias:'/notice/teacher/detail',
           component:NoticeDetail
         },
         {

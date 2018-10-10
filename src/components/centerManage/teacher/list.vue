@@ -11,41 +11,38 @@
             <p class="right-content__number">预约人数： {{item.prev}}</p>
           </section>
           <section  v-if="path === '/center/seaware/tea'" class="right-content">
-            <h4 class="right-content__title">{{item.title}} <span class="right-content__tips">预约人数: {{item.prev}}</span> </h4>
+            <h4 class="right-content__title">{{item.title}} <span class="right-content__tips">预约人数: {{item.has}}/{{item.all}}</span> </h4>
             <p class="right-content__time">实验时间: {{item.exp_dotime}} <span v-if="item.left">{{item.left}}</span> </p>
             <p class="right-content__number">实验位置： {{item.location_str}}</p>
           </section>
         </section>
       </section>
+      <my-bottom :total="total" @getCurrPage="getCurrPage" />
   </section>
 </template>
 
 <script>
 import {mapActions, mapState} from 'vuex'
+import MyBottom from '@/components/common/bottom'
 export default {
   name: '',
-
+  components:{
+    MyBottom,
+  },
   data () {
     return {
+      data:[],
+      total:0
     }
   },
   computed:{
     path(){
       return this.$route.path
     },
-    ...mapState({
-      'data': state => state.Tea.data.map(item => {
-        return {...item, img: $img + '/Img/' + item.img}
-      })
-    })
   },
   watch:{
     path(){
-      switch(this.path){
-        case '/center/seatest/tea' : return this.seaTestForTea()
-        case '/center/seaware/tea' : return this.seaWareForTea()
-        case '/center/seafixed/tea' : return this.getWareFixedList()
-      }
+      this.fetchData()
     }
   },
   methods: {
@@ -54,15 +51,36 @@ export default {
       'seaWareForTea':'seaWareForTea',
       'getWareFixedList':'getWareFixedList'
     }),
-    fetchData(){
+    fetchData({num = 10, page = 1} = {}){
       switch(this.path){
-        case '/center/seatest/tea' : return this.seaTestForTea()
-        case '/center/seaware/tea' : return this.seaWareForTea()
-        case '/center/seafixed/tea' : return this.getWareFixedList()
+        case '/center/seatest/tea' : return this.seaTestForTea({num, page})
+                                                  .then(res => {
+                                                    this.data = res.data && res.data.list.map(item => {
+                                                      return {...item, img: $img + '/Img/' + item.img}
+                                                    })
+                                                    this.total = Number(res.data.total)
+                                                  })
+        case '/center/seaware/tea' : return this.seaWareForTea({num, page})
+                                                  .then(res => {
+                                                    this.data = res.data && res.data.list.map(item => {
+                                                      return {...item, img: $img + '/Img/' + item.img}
+                                                    })
+                                                    this.total = Number(res.data.total)
+                                                  })
+        // case '/center/seafixed/tea' : return this.getWareFixedList()
+        //                                           .then(res => {
+        //                                             this.data = res.data && res.data.map(item => {
+        //                                               return {...item, img: $img + '/Img/' + item.img}
+        //                                             })
+        //                                           })
       }
     },
     jump2detail(item){
-      this.$router.push({path: '/list/details/tea', query:{info: JSON.stringify(item)}})
+      let _path = this.path === '/center/seatest/tea' ? '/list/details/tea' : '/list/details/ware/tea'
+      this.$router.push({path: _path, query:{id: item.id, info: JSON.stringify(item)}})
+    },
+    getCurrPage(e){
+      this.fetchData({num: 10, page: e})
     }
   },
   created(){

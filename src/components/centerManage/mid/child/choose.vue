@@ -1,6 +1,5 @@
 <template>
   <section class="wrapper">
-    {{student}}
       <section class="choose-wrapper">
         <header class="header">
           <ul>
@@ -21,7 +20,8 @@
           </ul>
         </header>
         <section class="list-item">
-          <section @click="handleClickSubmit(index)" v-for="(item,index) in student" :key="index" class="item" :class="[item.length !== info.exp.each_count ? 'item__active' : '']">
+          {{info}}
+          <section v-if="path === '/center/choose/test'" @click="handleClickSubmit(index)" v-for="(item,index) in student" :key="index" class="item" :class="[item.length !== info.exp.each_count ? 'item__active' : '']">
             <span class="item__title">
               <img class="item__img" src="../../../../assets/img/icon-cap.png" alt=""> {{ index + 1}}
             </span>
@@ -34,6 +34,19 @@
                   <div v-else class="item-box__item">
                     <img src="../../../../assets/img/icon-user-default.png" alt="" class="item-box__img">
                   </div>
+              </span>
+            </section>
+          </section>
+          <section v-if="path === '/center/choose/ware'" @click="handleClickSubmit(index)" v-for="(item,index) in student" :key="index" class="item" :class="[item.length !== info.exp.each_count ? 'item__active' : '']">
+            <span class="item__title">
+              <img class="item__img" src="../../../../assets/img/icon-cap.png" alt=""> {{ index + 1}}
+            </span>
+            <section class="item-box item-box__col">
+              <span class="item-box__col-item" v-for="(sub, sid) in item" :key="sid">
+                <div class="item-box_col-list">
+                  <img src="../../../../assets/img/icon-user-active.png" alt="" class="item-box__img">
+                  <span>{{sub.name}}</span>
+                </div>
               </span>
             </section>
           </section>
@@ -60,18 +73,33 @@ export default {
   },
   methods: {
     ...mapActions({
-      'getTestInfoOne':'getTestInfoOne'
+      'getTestInfoOne':'getTestInfoOne',
+      'putTestChoose':'putTestChoose',
+      'getWareInfoOne':'getWareInfoOne',
+      'putWareChoose':'putWareChoose'
     }),
     fetchData(){
       switch(this.path){
-        case '/center/choose/test' : return this.getTestInfoOne({id: this.$route.query.id}).then(res => {
-          this.info = res.data 
-          this.student = res.data.students
-          console.log(res.data)}) 
+        case '/center/choose/test' : return this.getTestInfoOne({id: this.$route.query.id})
+                                                  .then(res => {
+                                                    this.info = res.data 
+                                                    this.student = res.data.students
+                                                  }) 
+        case '/center/choose/ware' : return this.getWareInfoOne({id: this.$route.query.id})
+                                                  .then(res => {
+                                                    this.info = res.data
+                                                    this.student = res.data.students
+                                                    console.log(res)
+                                                  })
       }
     },
     handleClickSubmit(index){
-      console.log(index)
+      switch(this.path){
+        case '/center/choose/test' : return this.putTestChoose({id: this.info.exp.id, index})
+                                                  .then(res => {  (res.code === 1) && setTimeout(()=>{ this.fetchData()},1000)})
+        case '/center/choose/ware' : return this.putWareChoose({id:this.info.exp.id, index})
+                                                  .then(res => {  (res.code === 1) && setTimeout(()=>{ this.fetchData()}, 1000)})
+      }
     }
   },
   created(){
@@ -108,7 +136,7 @@ export default {
     .item{
       position: relative;
       width: 45%;
-      height: 240px;
+      min-height: 240px;
       margin-bottom: 10%;
       .item__title{
         margin-left: 45%;
@@ -165,6 +193,15 @@ export default {
   .item__active{
     &:hover{
       cursor: pointer;
+    }
+  }
+  .item-box__col{
+    @include flex-box(row, wrap, flex-start, flex-start);
+    .item-box_col-list{
+      @include flex-box(column);
+      margin-right: 10px;
+      min-width: 50px;
+      margin-bottom: 10px;
     }
   }
 }
