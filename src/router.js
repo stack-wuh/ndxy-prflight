@@ -175,7 +175,7 @@ export default new Router({
               component:TeaFixedList
             },
             {
-              path:'/center/seafixedDetail/tea/:id',
+              path:'/center/seafixedDetail/tea',
               name:'centerFixedDetailOne',
               component:TeaWareDetailOne,
             },

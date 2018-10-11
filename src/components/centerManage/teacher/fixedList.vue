@@ -64,7 +64,7 @@ export default {
       'getWareFixedList':'getWareFixedList'
     }),
     jump2other(item){
-      this.$router.push({path: '/center/seafixedDetail/tea/' + item.id})
+      this.$router.push({path: '/center/seafixedDetail/tea', query:{id: item.id}})
     }
   },
   created(){

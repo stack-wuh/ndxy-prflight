@@ -56,7 +56,7 @@ export default {
     })
   },
   created(){
-    let id = this.$route.params.id
+    let id = this.$route.query.id
     this.getFixedDetailOne({id})
   }
 }
