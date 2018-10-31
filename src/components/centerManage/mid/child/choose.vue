@@ -19,8 +19,8 @@
             </li>
           </ul>
         </header>
+
         <section class="list-item">
-          {{info}}
           <section v-if="path === '/center/choose/test'" @click="handleClickSubmit(index)" v-for="(item,index) in student" :key="index" class="item" :class="[item.length !== info.exp.each_count ? 'item__active' : '']">
             <span class="item__title">
               <img class="item__img" src="../../../../assets/img/icon-cap.png" alt=""> {{ index + 1}}
@@ -51,6 +51,7 @@
             </section>
           </section>
         </section>
+        
       </section>
   </section>
 </template>

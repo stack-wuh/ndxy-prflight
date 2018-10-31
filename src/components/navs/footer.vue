@@ -23,6 +23,7 @@ export default {
 @import '../../assets/style/mixin.scss';
 .footer-wrapper{
   background-color: #2D3E50;
+  z-index: 10000; 
   @include flex-box(column, wrap, center, center);
   .footer-wrapper__title{
     font-size: 14px;

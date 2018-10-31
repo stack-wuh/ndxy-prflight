@@ -156,7 +156,7 @@ export default {
     }
   },
   created(){
-    this.getUserInfo()
+    // this.getUserInfo()
   }
 }
 </script>
@@ -166,9 +166,9 @@ export default {
 @import '../../assets/style/mixin.scss';
 .header-wrapper{
   .header-wrapper-top{
-    height: 80px;
+    height: 65px;
     padding-left:15%;
-    line-height: 80px;
+    line-height: 65px;
     background-color: #fff;
     .header-wrapper-top__title{
       font-size: 20px;

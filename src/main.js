@@ -11,8 +11,13 @@ import {_g} from '@/utils/global'
 Vue.config.productionTip = false
 window.$store = store
 window.$http = $http
+
 window.rootPath = '/admin'
-window.$img = 'http://192.168.10.119/ndxy/public'
+// window.rootPath = '/api.php/'
+
+window.$img = 'http://192.168.10.119/ndxy1/public'
+// window.$img = 'http://yypt.ambcon.cn/Public/'
+
 window.$router = router
 window._g = _g
 new Vue({

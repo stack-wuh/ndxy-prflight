@@ -35,7 +35,7 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   .my-header{
-    height: 130px;
+    height: 115px;
   }
   .my-footer{
     height: 80px;

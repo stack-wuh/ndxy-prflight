@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {_g, NotNull}  from './global'
+import {_g}  from './global'
 import qs  from 'qs'
 /**
  * 发起请求的拦截器
@@ -34,13 +34,15 @@ axios.interceptors.response.use(response =>{
 const checkStatus = response =>{
   if(response && (response.status === 200)){
     let type = response.data.code === 1 ? 'success' : response.data.code === 0 ? 'error' : 'info'
-    _g.toastMsg({
-      type,
-      msg:response.data.msg
-    })
+    if(response.data.msg !== 'OK'){
+      _g.toastMsg({
+        type,
+        msg:response.data.msg
+      })
+    }
     return response.data
   }else if(response.staus === 500){
-    _t.toastMsg({
+    _g.toastMsg({
       type:'error',
       msg:'服务器端错误'
     })
@@ -92,12 +94,12 @@ export default {
     }).then(res=>{
       cb && cb(res)
     }).catch(err=>{
-      if(err){
-        _g.toastMsg({
-          type:'error',
-          msg:'网络异常,请稍后重试!',
-        })
-      }
+      // if(err){
+      //   _g.toastMsg({
+      //     type:'error',
+      //     msg:'网络异常,请稍后重试!',
+      //   })
+      // }
       window.$store.dispatch('changeShowLoading',{show:false})
     })
   }

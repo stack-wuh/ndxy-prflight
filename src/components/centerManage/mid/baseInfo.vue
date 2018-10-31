@@ -4,8 +4,7 @@
         <my-search />
         <MyTable v-if="isShow" :data="list" class="my-table"></MyTable>
         <my-bottom v-show="!['/center/exam','/center/prevtest','/center/prevdev'].includes(path)" :total="totals" :pageSize="10" @getCurrPage="getCurrPage" />
-
-        <el-dialog title="测试" v-if="$route.path === '/center/exam'" :visible.sync="isShowDialog" :before-close="beforeClose">
+        <el-dialog title="考试" v-if="$route.path === '/center/exam'" :visible.sync="isShowDialog" :before-close="beforeClose">
             <section class="exam-list" v-for="(item,index) in tempList1" :key="index">
               <p class="exam-list__title">{{index+1}}.{{item.title}}{{item.type == 0 ? '【单选】' : '【多选】'}}</p>
               <section v-if="item.type == 0">
